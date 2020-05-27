@@ -16,94 +16,8 @@
              <p class="window__descr">description</p>
              <div class="window__section">
 
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
-                       <div class="card">
-                             <div class="card__task">
-                                  <div class="card__task-header">task </div>
-                                  <div class="card__task-descr">description</div>
-                             </div>
-                             <div class="card__time">
-                               <div id="from">9:00</div>
-                                  <div class="card__time-line"></div>
-                               <div id="to">12:00</div>
-                             </div>
-                       </div>
+
+
 
              </div>
        </div>
@@ -121,10 +35,26 @@
        </nav>
        <div class="tools">
              <div class="tools__inner">
-               <div class=" tools__item"><img class="tools__item-img" src="img/plus.svg" alt=""></div>
+               <div class=" tools__item" id="plus"><img class="tools__item-img" src="img/plus.svg" alt=""></div>
                <div class=" tools__item"><img class="tools__item-img" src="img/edit.svg" alt=""></div>
 
              </div>
+       </div>
+
+
+       <div class="create-modal">
+           <div class="create-modal__header">New task</div>
+           <div class="create-modal__content">
+               <input class="create-modal__content-input" type="text" placeholder="Task name">
+               <input class="create-modal__content-input" type="text" placeholder="description">
+               <div class="create-modal__content-suptitle">Time</div>
+               <div class="create-modal__content-time">
+                   <input class="content-time__input" type="time"  placeholder="From">
+                     <div class="content-time__line"></div>
+                   <input  class="content-time__input" type="time"  placeholder="To">
+               </div>
+               <button class="create-modal__content-submit" type="submit" name="button">Add</button>
+           </div>
        </div>
 
    </main>
