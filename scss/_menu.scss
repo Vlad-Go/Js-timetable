@@ -63,7 +63,7 @@
   bottom: 60px;
   right: 0;
   z-index: 1;
-  transform: translateY(0vh);
+  transform: translateY(100vh);
   height: calc(100vh - 60px);
   width: 50px;
   background-color: #DCBB89;
@@ -81,11 +81,13 @@
   }
   &__item{
     padding-top: 28px;
-
     transition: all 400ms;
   }
 }
 
+.tools-active{
+  transform: translateY(0vh);
+}
 // ----------------NOT MOBILE
 // .tools__item:hover{
 //   transform: scale(1.3);
