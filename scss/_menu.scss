@@ -80,8 +80,12 @@
     flex-direction: column-reverse;
   }
   &__item{
-    padding-top: 28px;
+    margin-top: 28px;
     transition: all 400ms;
+  }
+  &__item-img{
+      width: 30px;
+      height: 30px;
   }
 }
 
