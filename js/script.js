@@ -41,7 +41,7 @@ const cardRender = () => {
 
      TASKSDATA.forEach((item, i) => {
        const card = `
-           <div class="card">
+           <div class="card" data-id="${i}">
                       <div class="card__task">
                            <div class="card__task-header">${item.taskName}</div>
                            <div class="card__task-descr">${item.taskDescription}</div>
@@ -106,6 +106,28 @@ const deleteAllTasks = () => {
 
 }
 
+const deleteTask = (e) => {
+
+
+      const id = e.target.closest(".card").dataset.id
+
+        TASKSDATA.splice(id,1);
+        addTaskToLocalStorage();
+
+        windowSection.removeEventListener('click',deleteTask);
+        clearBTN.classList.remove('clear-active');
+
+        cardRender();
+    
+
+
+}
+
+const taskSort = ()=>{
+    TASKSDATA.sort((a,b)=>{
+      return a.forSort - b.forSort;
+    })
+}
                // ----------------createModal----------
 const createNewTask = () => {
 
@@ -114,11 +136,13 @@ const createNewTask = () => {
      taskDescription: taskDescriptionInput.value,
      from:  fromInput.value,
      to : toInput.value,
+     forSort: +fromInput.value.split(':')[0] +fromInput.value.split(':')[1]/60,
     }
 
  TASKSDATA.push(newTask);
- cardRender();
+ taskSort();
  addTaskToLocalStorage();
+ cardRender();
  closeCreateModal();
 
 }
@@ -157,13 +181,13 @@ const createNewTask = () => {
  const windowSectionHEIGHT = () => {
    windowSection.style.height = mainWndowHEIGHT - (windowHeaderHEIGHT + windowDescrHEIGHT + MARGINBOTTOM) + 'px'
  }
-windowSectionHEIGHT();
+
 
 
 const windowHEIGHT = () => {
   document.body.style.height = window.innerHeight + 'px' ;
 }
-windowHEIGHT();
+
 
 
 
@@ -178,7 +202,21 @@ window.addEventListener("resize",()=>{
   createBTN.addEventListener('click',()=>{
   modal.classList.add("modal-open");
 });
-  clearBTN.addEventListener('click',deleteAllTasks);
+
+  clearBTN.addEventListener('click',()=>{
+
+    if (TASKSDATA.length > 0) {
+
+        clearBTN.classList.toggle('clear-active');
+        if (clearBTN.classList.contains('clear-active')) {
+          windowSection.addEventListener('click',deleteTask);
+        }else {
+           windowSection.removeEventListener('click',deleteTask);
+        }
+
+  }});
+
+
   document.addEventListener("click", e=>{
   const target  =  e.target.closest('.create-modal');
   const openBTN =  e.target.closest('#plus');
@@ -189,9 +227,11 @@ window.addEventListener("resize",()=>{
 });
 
 
-contentSubmit.addEventListener('click',e=>{
+  contentSubmit.addEventListener('click',e=>{
       e.preventDefault();
       createNewTask()
 });
 // --------------------------=-=-=----------------------------------
+windowHEIGHT();
+windowSectionHEIGHT();
 cardRender()

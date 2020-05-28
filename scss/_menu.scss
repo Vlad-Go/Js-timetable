@@ -63,8 +63,8 @@
   bottom: 60px;
   right: 0;
   z-index: 1;
-  transform: translateY(100vh);
-  height: calc(100vh - 60px);
+  transform: translateY(100%);
+  height: calc(100% - 60px);
   width: 50px;
   background-color: #DCBB89;
   transition: transform 300ms;
@@ -81,16 +81,25 @@
   }
   &__item{
     margin-top: 28px;
+    display: flex;
     transition: all 400ms;
   }
   &__item-img{
       width: 30px;
       height: 30px;
+      margin: 0 auto;
   }
 }
 
 .tools-active{
-  transform: translateY(0vh);
+  transform: translateY(0%);
+}
+.clear-active{
+  -webkit-animation-name: bounce;
+  animation-name: bounce;
+  -webkit-transform-origin: center bottom;
+  transform-origin: center bottom;
+     background-color: red;
 }
 // ----------------NOT MOBILE
 // .tools__item:hover{
