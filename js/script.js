@@ -1,5 +1,4 @@
 const
-      mainWndowHEIGHT = document.querySelector('.main__window').clientHeight,
       windowHeaderHEIGHT = document.querySelector('.window__header').clientHeight,
       windowDescrHEIGHT = document.querySelector('.window__descr').clientHeight ,
 
@@ -24,8 +23,8 @@ const MARGINBOTTOM = 32;
 
 
 
-let TASKSDATA = TASKSDATAGenerate();
-
+// let TASKSDATA = TASKSDATAGenerate();
+let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
 
 
 
@@ -56,7 +55,7 @@ const cardRender = () => {
          windowSection.insertAdjacentHTML('beforeend',card )
      });
 }
-
+// -------------------------------------------------
 // const cardRender = (taskName,taskDescription,from,to) => {
 //
 //   const card = `
@@ -74,6 +73,36 @@ const cardRender = () => {
 //     `
 //     windowSection.insertAdjacentHTML('beforeend',card )
 // }
+
+
+
+// const createNewTask = () => {
+//
+//   const taskName = taskNameInput.value;
+//   const taskDescription = taskDescriptionInput.value;
+//   const from = fromInput.value;
+//   const to = toInput.value;
+//
+//
+//   cardRender(taskName,taskDescription,from,to);
+//
+//   taskNameInput.value = null;
+//   taskDescriptionInput.value = null;
+//   fromInput.value = null;
+//   toInput.value = null;
+//   modal.classList.remove("modal-open");
+//
+//
+//
+// }
+
+// function TASKSDATAGenerate() {
+//   if (localStorage.length === 0 ) {
+//      return    [];
+//   }else {
+//     return  JSON.parse(localStorage.Tasks);
+//   }
+// }
 // -----------------------------------------------------------
 const closeCreateModal = () => {
   taskNameInput.value = null;
@@ -89,14 +118,6 @@ const toggleToolbar = () => {
 
 const addTaskToLocalStorage = () => {
   localStorage.setItem('Tasks', JSON.stringify(TASKSDATA));
-}
-
-function TASKSDATAGenerate() {
-  if (localStorage.length === 0 ) {
-     return    [];
-  }else {
-    return  JSON.parse(localStorage.Tasks);
-  }
 }
 
 const deleteAllTasks = () => {
@@ -118,7 +139,7 @@ const deleteTask = (e) => {
         clearBTN.classList.remove('clear-active');
 
         cardRender();
-    
+
 
 
 }
@@ -132,11 +153,11 @@ const taskSort = ()=>{
 const createNewTask = () => {
 
     const newTask = {
-     taskName: taskNameInput.value,
-     taskDescription: taskDescriptionInput.value,
-     from:  fromInput.value,
-     to : toInput.value,
-     forSort: +fromInput.value.split(':')[0] +fromInput.value.split(':')[1]/60,
+         taskName: taskNameInput.value,
+         taskDescription: taskDescriptionInput.value,
+         from:  fromInput.value,
+         to : toInput.value,
+         forSort: +fromInput.value.split(':')[0] +fromInput.value.split(':')[1]/60,
     }
 
  TASKSDATA.push(newTask);
@@ -146,25 +167,7 @@ const createNewTask = () => {
  closeCreateModal();
 
 }
-// const createNewTask = () => {
-//
-//   const taskName = taskNameInput.value;
-//   const taskDescription = taskDescriptionInput.value;
-//   const from = fromInput.value;
-//   const to = toInput.value;
-//
-//
-//   cardRender(taskName,taskDescription,from,to);
-//
-//   taskNameInput.value = null;
-//   taskDescriptionInput.value = null;
-//   fromInput.value = null;
-//   toInput.value = null;
-//   modal.classList.remove("modal-open");
-//
-//
-//
-// }
+
 
 
 
@@ -179,13 +182,13 @@ const createNewTask = () => {
 
 // ---- HEIGHT--------
  const windowSectionHEIGHT = () => {
-   windowSection.style.height = mainWndowHEIGHT - (windowHeaderHEIGHT + windowDescrHEIGHT + MARGINBOTTOM) + 'px'
+   const mainWindowHEIGHT = document.querySelector('.main__window').clientHeight;
+   windowSection.style.height = mainWindowHEIGHT - (windowHeaderHEIGHT + windowDescrHEIGHT + MARGINBOTTOM) + 'px'
  }
 
 
-
-const windowHEIGHT = () => {
-  document.body.style.height = window.innerHeight + 'px' ;
+ const  windowHEIGHT = () => {
+   document.body.style.height = window.innerHeight + 'px' ;
 }
 
 
@@ -214,7 +217,8 @@ window.addEventListener("resize",()=>{
            windowSection.removeEventListener('click',deleteTask);
         }
 
-  }});
+   }
+});
 
 
   document.addEventListener("click", e=>{
