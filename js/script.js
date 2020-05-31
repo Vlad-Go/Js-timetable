@@ -3,6 +3,11 @@ const
       windowDescrHEIGHT = document.querySelector('.window__descr').clientHeight ,
 
 
+
+
+      main = document.querySelector('.main'),
+      title = document.querySelector('.window__header'),
+      description = document.querySelector('.window__descr'),
       windowSection = document.querySelector('.window__section'),
       toolbar = document.querySelector('.tools'),
       modal = document.querySelector('.create-modal'),
@@ -11,6 +16,7 @@ const
       menuBTN = document.querySelector('.menu__btn'),
       createBTN = document.getElementById('plus'),
       clearBTN = document.getElementById('clear'),
+      editBTN = document.getElementById('edit'),
       contentSubmit = document.querySelector('.create-modal__content-submit'),
 
       // -------------------------form
@@ -23,10 +29,57 @@ const MARGINBOTTOM = 32;
 
 
 
+
 // let TASKSDATA = TASKSDATAGenerate();
 let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
 
 
+
+
+
+
+
+
+
+
+
+
+class EditModal {
+
+
+  constructor({modalHeader,modalFooter, modalPosition,cardID}) {
+    this.modalHeader = modalHeader || ''
+    this.modalFooter = modalFooter || ''
+    this.modalPosition = modalPosition ? modalPosition : 'center'
+    this.cardID = cardID || ''
+  }
+
+
+
+  generate(){
+      const  overlay =  document.createElement('div');
+      overlay.classList.add('modal-overlay');
+      overlay.classList.add(this.modalPosition);
+      const  submitBTN =   `<button class="edit-modal__submitBtn" type="submit"  data-cardid="${this.cardID}" name="button">Apply</button>`
+      const  card = `
+              <div class="edit-modal ">
+                ${this.modalHeader}
+                ${this.modalFooter}
+              </div>
+          `
+
+      overlay.insertAdjacentHTML('afterbegin', card)
+      main.append(overlay);
+      main.insertAdjacentHTML('beforeend', submitBTN)
+
+      document.addEventListener('click',closeEditModal)
+
+  }
+ //  delete(){
+ //    main.removeChild(document.querySelector('.modal-overlay'))
+ //    document.removeEventListener('click',removeEvntList)
+ // }
+}
 
 
 
@@ -149,6 +202,83 @@ const taskSort = ()=>{
       return a.forSort - b.forSort;
     })
 }
+
+const closeEditModal = (e) => {
+  const editModal =  e.target.closest('.edit-modal');
+  const submitBTN =  e.target.closest('.edit-modal__submitBtn');
+  if (!editModal) {
+    main.removeChild(document.querySelector('.modal-overlay'));
+    main.removeChild(document.querySelector('.edit-modal__submitBtn'));
+    editBTN.classList.remove('clear-active');
+    title.classList.remove('edit-active');
+    description.classList.remove('edit-active');
+    document.removeEventListener('click',closeEditModal);
+
+  }
+  if (submitBTN) {
+    changesSave(submitBTN.dataset.cardid)
+  }
+
+}
+
+const changesSave = (cardId) => {
+  console.log('Save');
+  console.log(cardId);
+  console.log(TASKSDATA[cardId]);
+  TASKSDATA[cardId].taskName =' Edited!'
+  addTaskToLocalStorage();
+  cardRender();
+
+}
+
+const editFunc = (e)=>{
+
+      console.log('work!!');
+
+      if (editBTN.classList.contains('clear-active')) {
+        console.log('Edit !');
+        const target = e.target.closest('.edit-active');
+
+            if (target.classList.contains("card")) {
+                 console.log('Edit card!')
+
+                  const id  =  target.dataset.id;
+                  const {taskName,taskDescription,from,to}  = TASKSDATA[id];
+
+                           let editModal = new EditModal({
+                             modalHeader:`  <div class="card-edit" data-id="">
+                                                   <div class="card-edit__task">
+                                                       <input class="card-edit__input"  id="taskName" type="text" placeholder="Task name" value="${taskName}">
+                                                       <input class="card-edit__input"  id="taskDescription" type="text" placeholder="description"value="${taskDescription}">
+                                                   </div>
+                                                   <div class="card-edit__time">
+                                                          <input class="card-edit-time__input" id='from' type="time"  placeholder="From " value="${from}" >
+                                                              <div class="card-edit-time__line"></div>
+                                                          <input class="card-edit-time__input" id='from' type="time"  placeholder="From " value="${to}" >
+
+                                                   </div>
+                                            </div>`,
+                             modalPosition: 'center',
+                             cardID: id,
+
+                           }).generate();
+
+
+               } else {
+                    console.log('Edit etc!')
+                         let modalL = new EditModal({
+                           modalHeader:` <div class="title">Title</div>
+                                          <div class="descr">descr</div>`,
+                           modalPosition: 'top',
+
+                         }).generate()
+               }
+         }
+         else {
+           document.removeEventListener("click", editFunc)
+         }
+
+}
                // ----------------createModal----------
 const createNewTask = () => {
 
@@ -205,7 +335,6 @@ window.addEventListener("resize",()=>{
   createBTN.addEventListener('click',()=>{
   modal.classList.add("modal-open");
 });
-
   clearBTN.addEventListener('click',()=>{
 
     if (TASKSDATA.length > 0) {
@@ -219,15 +348,39 @@ window.addEventListener("resize",()=>{
 
    }
 });
+  editBTN.addEventListener('click',()=>{
+
+      const cards = document.querySelectorAll('.card');
+
+          editBTN.classList.toggle('clear-active');
+          title.classList.toggle('edit-active');
+          description.classList.toggle('edit-active');
+          cards.forEach((item) => {
+            item.classList.toggle('edit-active');
+          });
+          if (editBTN.classList.contains('clear-active')) {
+              document.addEventListener("click", editFunc)
+          }
+
+
+
+
+
+
+});
 
 
   document.addEventListener("click", e=>{
   const target  =  e.target.closest('.create-modal');
   const openBTN =  e.target.closest('#plus');
 
-   if(!target && !openBTN ){
-        modal.classList.remove("modal-open")
+
+
+   if(!target && !openBTN  ){
+        modal.classList.remove("modal-open");
+
    }
+
 });
 
 
