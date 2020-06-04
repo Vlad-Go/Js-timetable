@@ -17,6 +17,7 @@ const
       createBTN = document.getElementById('plus'),
       clearBTN = document.getElementById('clear'),
       editBTN = document.getElementById('edit'),
+      tools  = document.querySelectorAll('.tools__item'),
       contentSubmit = document.querySelector('.create-modal__content-submit'),
 
       // -------------------------form
@@ -24,14 +25,21 @@ const
       taskDescriptionInput = document.getElementById('taskDescription'),
       fromInput = document.getElementById('from'),
       toInput = document.getElementById('to');
+      // -------------------------edit-form
+
 
 const MARGINBOTTOM = 32;
 
+// let isCreateToolActive = false;
+// let isClearToolActive = false;
+// let isEditToolActive = false;
 
 
 
 // let TASKSDATA = TASKSDATAGenerate();
 let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
+ title.textContent = localStorage.getItem('Title')   ? JSON.parse(localStorage.Title) :  'Title';
+ description.textContent = !!localStorage.getItem('Description')   ? JSON.parse(localStorage.Description) :  'description';
 
 
 
@@ -47,11 +55,12 @@ let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
 class EditModal {
 
 
-  constructor({modalHeader,modalFooter, modalPosition,cardID}) {
+  constructor({modalHeader,modalFooter, modalPosition,cardID,type}) {
     this.modalHeader = modalHeader || ''
     this.modalFooter = modalFooter || ''
     this.modalPosition = modalPosition ? modalPosition : 'center'
     this.cardID = cardID || ''
+    this.type= type|| ''
   }
 
 
@@ -60,9 +69,10 @@ class EditModal {
       const  overlay =  document.createElement('div');
       overlay.classList.add('modal-overlay');
       overlay.classList.add(this.modalPosition);
-      const  submitBTN =   `<button class="edit-modal__submitBtn" type="submit"  data-cardid="${this.cardID}" name="button">Apply</button>`
+
+      const  submitBTN =   `<button class="edit-modal__submitBtn" type="submit"  data-cardid="${this.cardID}" data-type="${this.type}" name="button">Apply</button>`
       const  card = `
-              <div class="edit-modal ">
+              <div class="edit-modal " >
                 ${this.modalHeader}
                 ${this.modalFooter}
               </div>
@@ -156,28 +166,20 @@ const cardRender = () => {
 //     return  JSON.parse(localStorage.Tasks);
 //   }
 // }
-// -----------------------------------------------------------
-const closeCreateModal = () => {
-  taskNameInput.value = null;
-  taskDescriptionInput.value = null;
-  fromInput.value = null;
-  toInput.value = null;
-  modal.classList.remove("modal-open");
+// ---------------------MAIN     Funcs--------------------------------------
+
+const init = () => {
+  windowHEIGHT();
+  windowSectionHEIGHT();
+  cardRender()
+
 }
 
+
+
+//  ------------- Toolbar Funcs
 const toggleToolbar = () => {
   toolbar.classList.toggle('tools-active');
-}
-
-const addTaskToLocalStorage = () => {
-  localStorage.setItem('Tasks', JSON.stringify(TASKSDATA));
-}
-
-const deleteAllTasks = () => {
-    localStorage.removeItem('Tasks');
-    TASKSDATA = []
-    windowSection.textContent = '';
-
 }
 
 const deleteTask = (e) => {
@@ -186,61 +188,68 @@ const deleteTask = (e) => {
       const id = e.target.closest(".card").dataset.id
 
         TASKSDATA.splice(id,1);
-        addTaskToLocalStorage();
 
         windowSection.removeEventListener('click',deleteTask);
-        clearBTN.classList.remove('clear-active');
+        clearBTN.classList.remove('active');
 
+        addTaskToLocalStorage();
         cardRender();
 
-
-
 }
 
-const taskSort = ()=>{
-    TASKSDATA.sort((a,b)=>{
-      return a.forSort - b.forSort;
-    })
-}
+const editStyleToggle = () => {
 
+ const cards = document.querySelectorAll('.card');
+  editBTN.classList.toggle('active');
+  title.classList.toggle('edit-active');
+  description.classList.toggle('edit-active');
+  cards.forEach((item) => {
+      item.classList.toggle('edit-active');
+  });
+
+}
 const closeEditModal = (e) => {
   const editModal =  e.target.closest('.edit-modal');
   const submitBTN =  e.target.closest('.edit-modal__submitBtn');
-  if (!editModal) {
+
+
+  if (!editModal && !submitBTN) {
+    document.removeEventListener('click',closeEditModal);
+    document.removeEventListener("click", editFunc)
+
     main.removeChild(document.querySelector('.modal-overlay'));
     main.removeChild(document.querySelector('.edit-modal__submitBtn'));
-    editBTN.classList.remove('clear-active');
-    title.classList.remove('edit-active');
-    description.classList.remove('edit-active');
-    document.removeEventListener('click',closeEditModal);
+
+    editStyleToggle()
 
   }
   if (submitBTN) {
-    changesSave(submitBTN.dataset.cardid)
+     editStyleToggle()
+
+     document.removeEventListener('click',closeEditModal);
+     document.removeEventListener("click", editFunc);
+
+     changesSave(submitBTN.dataset.cardid , submitBTN.dataset.type)
+
+
+     main.removeChild(document.querySelector('.modal-overlay'));
+     main.removeChild(document.querySelector('.edit-modal__submitBtn'));
+
+
   }
-
-}
-
-const changesSave = (cardId) => {
-  console.log('Save');
-  console.log(cardId);
-  console.log(TASKSDATA[cardId]);
-  TASKSDATA[cardId].taskName =' Edited!'
-  addTaskToLocalStorage();
-  cardRender();
 
 }
 
 const editFunc = (e)=>{
 
-      console.log('work!!');
+// console.log('work!!');
 
-      if (editBTN.classList.contains('clear-active')) {
-        console.log('Edit !');
+      if (editBTN.classList.contains('active')) {
+// console.log('Edit !');
         const target = e.target.closest('.edit-active');
-
+console.log(target);
             if (target.classList.contains("card")) {
-                 console.log('Edit card!')
+// console.log('Edit card!')
 
                   const id  =  target.dataset.id;
                   const {taskName,taskDescription,from,to}  = TASKSDATA[id];
@@ -248,28 +257,33 @@ const editFunc = (e)=>{
                            let editModal = new EditModal({
                              modalHeader:`  <div class="card-edit" data-id="">
                                                    <div class="card-edit__task">
-                                                       <input class="card-edit__input"  id="taskName" type="text" placeholder="Task name" value="${taskName}">
-                                                       <input class="card-edit__input"  id="taskDescription" type="text" placeholder="description"value="${taskDescription}">
+                                                       <input class="card-edit__input"  id="editTaskName" type="text" placeholder="Task name" value="${taskName}">
+                                                       <input class="card-edit__input"  id="editTaskDescription" type="text" placeholder="description"value="${taskDescription}">
                                                    </div>
                                                    <div class="card-edit__time">
-                                                          <input class="card-edit-time__input" id='from' type="time"  placeholder="From " value="${from}" >
+                                                          <input class="card-edit-time__input" id='editFrom' type="time"  placeholder="From " value="${from}" >
                                                               <div class="card-edit-time__line"></div>
-                                                          <input class="card-edit-time__input" id='from' type="time"  placeholder="From " value="${to}" >
+                                                          <input class="card-edit-time__input" id='editTo' type="time"  placeholder="To " value="${to}" >
 
                                                    </div>
                                             </div>`,
                              modalPosition: 'center',
                              cardID: id,
+                             type: 'card',
 
                            }).generate();
 
 
-               } else {
+               } else     if (target.classList.contains("window__header") ||target.classList.contains("window__descr"))  {
                     console.log('Edit etc!')
                          let modalL = new EditModal({
-                           modalHeader:` <div class="title">Title</div>
-                                          <div class="descr">descr</div>`,
+                           modalHeader: `<div class="window-header__edit">
+                                             <input type="text" class="window-header__edit-title" value="${title.textContent}" type="text"/>
+                                             <input type="text" class="window-header__edit-descr" value="${description.textContent}" type="text"/>
+                                          </div>`,
+
                            modalPosition: 'top',
+                            type: 'header',
 
                          }).generate()
                }
@@ -279,7 +293,90 @@ const editFunc = (e)=>{
          }
 
 }
-               // ----------------createModal----------
+
+const changesSave = (cardId, type) => {
+  // console.log('Save');
+  console.log(type);
+if (type === 'card') {
+  TASKSDATA[cardId].taskName = document.getElementById('editTaskName').value;
+  TASKSDATA[cardId].taskDescription = document.getElementById('editTaskDescription').value
+  TASKSDATA[cardId].from = document.getElementById('editFrom').value;
+  TASKSDATA[cardId].to = document.getElementById('editTo').value;
+  TASKSDATA[cardId].forSort = +document.getElementById('editFrom').value.split(':')[0] +document.getElementById('editFrom').value.split(':')[1]/60;
+
+  // console.log(TASKSDATA[cardId]);
+
+  taskSort()
+  addTaskToLocalStorage();
+  cardRender();
+
+}else if (type === "header") {
+  title.textContent = document.querySelector('.window-header__edit-title').value;
+  description.textContent = document.querySelector('.window-header__edit-descr').value;
+  addInfoToLocalStorage();
+}
+
+
+
+}
+
+
+// -----------------------------
+
+
+
+
+const taskSort = ()=>{
+    TASKSDATA.sort((a,b)=>{
+      return a.forSort - b.forSort;
+    })
+}
+const addTaskToLocalStorage = () => {
+  localStorage.setItem('Tasks', JSON.stringify(TASKSDATA));
+}
+const addInfoToLocalStorage = () => {
+  localStorage.setItem('Title', JSON.stringify(title.textContent));
+  localStorage.setItem('Description', JSON.stringify(description.textContent));
+}
+// const checkActiveTool = () => {
+//   tools.forEach((item) => {
+//     if (item.classList.contains('active')) {
+//             isAnyToolActive = item.id;
+//     }
+//     else if (!item.classList.contains('active')) {
+//         isAnyToolActive = '';
+//     }
+//
+//   });
+//   console.log(tools);
+//
+
+
+// }
+
+
+const deleteAllTasks = () => {
+    localStorage.removeItem('Tasks');
+    TASKSDATA = []
+    windowSection.textContent = '';
+
+}
+
+
+
+
+
+
+               // ----------------createModal------
+const closeCreateModal = () => {
+                 taskNameInput.value = null;
+                 taskDescriptionInput.value = null;
+                 fromInput.value = null;
+                 toInput.value = null;
+                 createBTN.classList.remove('active');
+                 modal.classList.remove("modal-open");
+    }
+
 const createNewTask = () => {
 
     const newTask = {
@@ -299,17 +396,6 @@ const createNewTask = () => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 // ---- HEIGHT--------
  const windowSectionHEIGHT = () => {
    const mainWindowHEIGHT = document.querySelector('.main__window').clientHeight;
@@ -322,64 +408,72 @@ const createNewTask = () => {
 }
 
 
-
-
 // -----------------------------EVENTS--------------------------
-window.addEventListener("resize",()=>{
+   window.addEventListener("resize",()=>{
   windowSectionHEIGHT();
   windowHEIGHT()
 });
+   menuBTN.addEventListener('click',toggleToolbar);
+
+      //  ----------------------tools EVENTS
+          createBTN.addEventListener('click',()=>{
+
+              createBTN.classList.toggle('active');
+              modal.classList.add("modal-open");
 
 
-  menuBTN.addEventListener('click',toggleToolbar);
-  createBTN.addEventListener('click',()=>{
-  modal.classList.add("modal-open");
-});
-  clearBTN.addEventListener('click',()=>{
+        });
 
-    if (TASKSDATA.length > 0) {
 
-        clearBTN.classList.toggle('clear-active');
-        if (clearBTN.classList.contains('clear-active')) {
-          windowSection.addEventListener('click',deleteTask);
-        }else {
-           windowSection.removeEventListener('click',deleteTask);
-        }
+          clearBTN.addEventListener('click',()=>{
 
-   }
-});
-  editBTN.addEventListener('click',()=>{
 
-      const cards = document.querySelectorAll('.card');
+                  if (TASKSDATA.length > 0) {
 
-          editBTN.classList.toggle('clear-active');
-          title.classList.toggle('edit-active');
-          description.classList.toggle('edit-active');
-          cards.forEach((item) => {
-            item.classList.toggle('edit-active');
-          });
-          if (editBTN.classList.contains('clear-active')) {
-              document.addEventListener("click", editFunc)
-          }
+                      clearBTN.classList.toggle('active');
+
+                      if (clearBTN.classList.contains('active')) {
+                        windowSection.addEventListener('click',deleteTask);
+
+                      }else {
+                         windowSection.removeEventListener('click',deleteTask);
+
+                      }
 
 
 
+         }
+        });
+
+
+          editBTN.addEventListener('click',()=>{
+
+
+                   editStyleToggle()
+                    if (editBTN.classList.contains('active')) {
+                        document.addEventListener("click", editFunc);
+
+                    } else {
+                       document.removeEventListener("click", editFunc);
+
+                     }
+
+
+  });
 
 
 
-});
 
 
   document.addEventListener("click", e=>{
   const target  =  e.target.closest('.create-modal');
   const openBTN =  e.target.closest('#plus');
 
+     if(!target && !openBTN  ){
+         createBTN.classList.remove('active');
+          modal.classList.remove("modal-open");
 
-
-   if(!target && !openBTN  ){
-        modal.classList.remove("modal-open");
-
-   }
+     }
 
 });
 
@@ -389,6 +483,6 @@ window.addEventListener("resize",()=>{
       createNewTask()
 });
 // --------------------------=-=-=----------------------------------
-windowHEIGHT();
-windowSectionHEIGHT();
-cardRender()
+
+
+init()

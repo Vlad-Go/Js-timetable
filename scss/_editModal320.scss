@@ -1,0 +1,182 @@
+// --------------EDIT-----------------------------------
+.modal-overlay{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 555;
+  display: flex;
+  justify-content: center;
+
+}
+
+
+
+
+.edit-modal{
+  width: 100%;
+  &__submitBtn{
+    position: absolute;
+    bottom: 40px;
+    z-index: 556;
+    font-style: normal;
+     font-weight: bold;
+     font-size: 18px;
+     line-height: 21px;
+     padding: 10px 27px;
+     background-color: #DCBB89;
+     border:none;
+     color: #FFFFFF;
+     align-self: center;
+  }
+}
+
+
+// ===========Styles for class
+.top{
+   align-items: flex-start;
+}
+.center{
+
+ align-items: center;
+}
+.botom{
+  align-items: flex-end;
+
+}
+
+// ---------------------------
+
+
+@keyframes anim{
+  from{
+    height: 0%;
+    top: 50%;
+  }
+  to{
+    top: 0;
+    height: 100%;
+  }
+}
+//-----------------EDIT Card
+
+
+.card.edit-active{
+  background-color: rgb(195, 80, 73)
+}
+
+
+
+.card-edit{
+  box-sizing: border-box;
+  width: 95%;
+  margin: 0 auto;
+  min-height: 60px;
+  background: #FFFFFF;
+  border-radius: 4px;
+  padding-bottom: 10px;
+  padding-top: 7px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  transition: all 300ms;
+  &__task{
+    padding: 5px 13px  5px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+&__input{
+  background: #F3F3F3;
+  border-radius: 5px;
+  margin-bottom: 16px;
+  height: 30px;
+  width: 90%;
+  border: none;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 16px;
+  color: #8D8B8B;
+  padding: 0 10px;
+  box-sizing: border-box;
+
+}
+  &__time{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 5px 13px 5px 0;
+  }
+ &-time__input{
+   width: 66px;
+   height: 33px;
+   background: #F3F3F3;
+   border-radius: 5px;
+   border-bottom: 1px solid #DCBB89;
+   font-style: normal;
+   font-weight: 300;
+   font-size: 14px;
+   line-height: 18px;
+   color: #8D8B8B;
+   border: none;
+   padding: 0 10px;
+ }
+ &-time__line {
+    margin: 10px 7px;
+    width: 15px;
+    height: 1px;
+    background-color: #000;
+  }
+}
+//-----------------EDIT __header
+.window__header.edit-active,
+.window__descr.edit-active{
+
+background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(195,90,73,1) 32%);
+  background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
+
+.window-header__edit{
+  box-sizing: border-box;
+  width: 100%;
+  background: #FFFFFF;
+  padding: 12px 11px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  transition: all 300ms;
+}
+.window-header__edit-title,
+.window-header__edit-descr{
+
+border-radius: 5px;
+margin-bottom: 5px;
+padding: 0 10px;
+height: 30px;
+
+border: none;
+font-style: normal;
+
+background: #F3F3F3;
+color: #8D8B8B;
+box-sizing: border-box;
+}
+.window-header__edit-title{
+  width: 50%;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+}
+.window-header__edit-descr{
+  width: 100%;
+  font-weight: 300;
+font-size: 14px;
+line-height: 16px;
+}
