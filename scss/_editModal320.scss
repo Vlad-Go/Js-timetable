@@ -62,7 +62,10 @@
 
 
 .card.edit-active{
-  background-color: rgb(195, 80, 73)
+  background-color: rgb(201, 105, 99);
+  // animation: editModeOn  ;
+  // animation-duration: 900ms;
+  // animation-iteration-count: infinite;
 }
 
 
@@ -134,6 +137,16 @@
     background-color: #000;
   }
 }
+
+// @keyframes editModeOn{
+//   from{
+//     background: linear-gradient(90deg, rgba(195,80,64,1) 0%, rgba(255,255,255,1) 100%);
+//   }
+//   to{
+//     background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(195,80,64,1) 100%);
+//   }
+// }
+
 //-----------------EDIT __header
 .window__header.edit-active,
 .window__descr.edit-active{

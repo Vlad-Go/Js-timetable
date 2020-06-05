@@ -29,6 +29,7 @@
     width: 60px;
     padding: 10px;
     border: none;
+    outline: none;
     background-color: #494545;
     transition: padding 300ms;
     &-inner{
@@ -38,8 +39,13 @@
       align-items: center;
       border: 4px solid #727272;
       box-sizing: border-box;
+      position: relative;
     }
   }
+}
+.menu__btn-svg{
+  width: 70%;
+  height: 70%
 }
 .year{
   font-style: normal;
@@ -53,7 +59,7 @@
   font-size: 28px;
   line-height: 33px;
 }
-.menu__btn:hover{
+.menu__btn.active{
   padding: 5px;
 }
 
@@ -71,7 +77,7 @@
   background-color: #DCBB89;
   transition: transform 300ms;
   &__inner{
-    height: fit-content;
+    max-height: fit-content;
     margin: 0 auto 5px;
     background: #D7A861;
     border-radius: 7px;
@@ -82,7 +88,7 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column-reverse;
-
+    transition:  all 300ms;
   }
   &__item{
     margin-top: 28px;
@@ -103,6 +109,13 @@
   }
 }
 
+.tools__inner.active{
+ height: 350px;
+ justify-content: center;
+ background-color: #DC7352;
+}
+
+
 @keyframes UpDown {
  0% {
    transform: translateY(100%);
@@ -121,26 +134,29 @@
 
 
 #clear.active{
-  -webkit-animation-name: bounce;
-  animation-name: bounce;
-  -webkit-transform-origin: center bottom;
-  transform-origin: center bottom;
-     background-color: red;
+   animation: LowUpDown 0.3s ;
+
 }
 #edit.active{
-  -webkit-animation-name: bounce;
-  animation-name: bounce;
-  -webkit-transform-origin: center bottom;
-  transform-origin: center bottom;
-     background-color: red;
+   animation: LowUpDown 0.3s ;
+
 }
 #plus.active{
-  -webkit-animation-name: bounce;
-  animation-name: bounce;
-  -webkit-transform-origin: center bottom;
-  transform-origin: center bottom;
-     background-color: red;
+   animation: LowUpDown 0.3s ;
+
 }
+@keyframes LowUpDown {
+ 0% {
+   transform: translateY(5px);
+ }
+ 50% {
+   transform: translateY(-7px);
+  }
+ 100% {
+   transform: translateY(0);
+  }
+}
+
 // ----------------NOT MOBILE
 // .tools__item:hover{
 //   transform: scale(1.3);

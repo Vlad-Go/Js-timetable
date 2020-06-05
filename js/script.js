@@ -10,6 +10,7 @@ const
       description = document.querySelector('.window__descr'),
       windowSection = document.querySelector('.window__section'),
       toolbar = document.querySelector('.tools'),
+      toolbarInner = document.querySelector('.tools__inner'),
       modal = document.querySelector('.create-modal'),
 
       // -----------BTNS
@@ -24,8 +25,16 @@ const
       taskNameInput = document.getElementById('taskName'),
       taskDescriptionInput = document.getElementById('taskDescription'),
       fromInput = document.getElementById('from'),
-      toInput = document.getElementById('to');
-      // -------------------------edit-form
+      toInput = document.getElementById('to'),
+
+
+      // -------------------------date
+
+      day = document.querySelector('.day'),
+      year = document.querySelector('.year');
+
+
+
 
 
 const MARGINBOTTOM = 32;
@@ -38,9 +47,14 @@ const MARGINBOTTOM = 32;
 
 // let TASKSDATA = TASKSDATAGenerate();
 let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
+
  title.textContent = localStorage.getItem('Title')   ? JSON.parse(localStorage.Title) :  'Title';
  description.textContent = !!localStorage.getItem('Description')   ? JSON.parse(localStorage.Description) :  'description';
 
+var d = new Date();
+
+ day.textContent = +d.getDate() + "." +  +(d.getMonth() + 1);
+ year.textContent = +d.getFullYear();
 
 
 
@@ -166,6 +180,22 @@ const cardRender = () => {
 //     return  JSON.parse(localStorage.Tasks);
 //   }
 // }
+// const checkActiveTool = () => {
+//   tools.forEach((item) => {
+//     if (item.classList.contains('active')) {
+//             isAnyToolActive = item.id;
+//     }
+//     else if (!item.classList.contains('active')) {
+//         isAnyToolActive = '';
+//     }
+//
+//   });
+//   console.log(tools);
+//
+
+
+// }
+
 // ---------------------MAIN     Funcs--------------------------------------
 
 const init = () => {
@@ -180,6 +210,8 @@ const init = () => {
 //  ------------- Toolbar Funcs
 const toggleToolbar = () => {
   toolbar.classList.toggle('tools-active');
+
+  menuBTN.classList.toggle('active');
 }
 
 const deleteTask = (e) => {
@@ -190,12 +222,16 @@ const deleteTask = (e) => {
         TASKSDATA.splice(id,1);
 
         windowSection.removeEventListener('click',deleteTask);
+                toggleActiveTool(clearBTN)
         clearBTN.classList.remove('active');
+
 
         addTaskToLocalStorage();
         cardRender();
 
 }
+
+
 
 const editStyleToggle = () => {
 
@@ -215,16 +251,18 @@ const closeEditModal = (e) => {
 
   if (!editModal && !submitBTN) {
     document.removeEventListener('click',closeEditModal);
-    document.removeEventListener("click", editFunc)
+    document.removeEventListener("click", editFunc);
 
     main.removeChild(document.querySelector('.modal-overlay'));
     main.removeChild(document.querySelector('.edit-modal__submitBtn'));
 
     editStyleToggle()
+    toggleActiveTool(editBTN)
 
   }
   if (submitBTN) {
      editStyleToggle()
+     toggleActiveTool(editBTN)
 
      document.removeEventListener('click',closeEditModal);
      document.removeEventListener("click", editFunc);
@@ -239,7 +277,6 @@ const closeEditModal = (e) => {
   }
 
 }
-
 const editFunc = (e)=>{
 
 // console.log('work!!');
@@ -289,11 +326,11 @@ console.log(target);
                }
          }
          else {
-           document.removeEventListener("click", editFunc)
+           document.removeEventListener("click", editFunc);
+
          }
 
 }
-
 const changesSave = (cardId, type) => {
   // console.log('Save');
   console.log(type);
@@ -338,21 +375,18 @@ const addInfoToLocalStorage = () => {
   localStorage.setItem('Title', JSON.stringify(title.textContent));
   localStorage.setItem('Description', JSON.stringify(description.textContent));
 }
-// const checkActiveTool = () => {
-//   tools.forEach((item) => {
-//     if (item.classList.contains('active')) {
-//             isAnyToolActive = item.id;
-//     }
-//     else if (!item.classList.contains('active')) {
-//         isAnyToolActive = '';
-//     }
-//
-//   });
-//   console.log(tools);
-//
+const toggleActiveTool = (tool) => {
 
+    toolbarInner.classList.toggle('active');
 
-// }
+       tools.forEach((item) => {
+
+         if (item !== tool) {
+              item.classList.toggle('hide');
+         }
+       });
+
+}
 
 
 const deleteAllTasks = () => {
@@ -362,7 +396,9 @@ const deleteAllTasks = () => {
 
 }
 
-
+const menuAnimation = () => {
+  menuBTN.classList.toggle('active');
+}
 
 
 
@@ -431,12 +467,14 @@ const createNewTask = () => {
                   if (TASKSDATA.length > 0) {
 
                       clearBTN.classList.toggle('active');
+                      toggleActiveTool(clearBTN)
 
                       if (clearBTN.classList.contains('active')) {
                         windowSection.addEventListener('click',deleteTask);
 
                       }else {
                          windowSection.removeEventListener('click',deleteTask);
+
 
                       }
 
@@ -450,6 +488,7 @@ const createNewTask = () => {
 
 
                    editStyleToggle()
+                         toggleActiveTool(editBTN)
                     if (editBTN.classList.contains('active')) {
                         document.addEventListener("click", editFunc);
 
