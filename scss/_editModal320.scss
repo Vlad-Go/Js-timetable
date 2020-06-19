@@ -7,6 +7,7 @@
   z-index: 555;
   display: flex;
   justify-content: center;
+  transition: all 400ms;
 
 }
 
@@ -15,6 +16,7 @@
 
 .edit-modal{
   width: 100%;
+  transition: all 450ms;
   &__submitBtn{
     position: absolute;
     bottom: 40px;
@@ -37,7 +39,6 @@
    align-items: flex-start;
 }
 .center{
-
  align-items: center;
 }
 .botom{
@@ -62,7 +63,7 @@
 
 
 .card.edit-active{
-  background-color: rgb(201, 105, 99);
+  background-color: #DC5644 !important;
   // animation: editModeOn  ;
   // animation-duration: 900ms;
   // animation-iteration-count: infinite;
@@ -80,9 +81,17 @@
   padding-bottom: 10px;
   padding-top: 7px;
   margin-bottom: 15px;
-  display: flex;
-  justify-content: space-between;
-  transition: all 300ms;
+
+  transition: all 400ms;
+  transform: scale(0.5);
+  animation-name: card-edit-scale;
+  animation-duration: 450ms;
+  animation-fill-mode: forwards;
+  &__wrapp{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   &__task{
     padding: 5px 13px  5px;
     display: flex;
@@ -98,7 +107,7 @@
   border: none;
   font-style: normal;
   font-weight: 300;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 16px;
   color: #8D8B8B;
   padding: 0 10px;
@@ -138,20 +147,20 @@
   }
 }
 
-// @keyframes editModeOn{
-//   from{
-//     background: linear-gradient(90deg, rgba(195,80,64,1) 0%, rgba(255,255,255,1) 100%);
-//   }
-//   to{
-//     background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(195,80,64,1) 100%);
-//   }
-// }
+@keyframes card-edit-scale{
+
+  to{
+    transform: scale(1);
+  }
+}
 
 //-----------------EDIT __header
 .window__header.edit-active,
 .window__descr.edit-active{
 
-background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(195,90,73,1) 32%);
+  background: -webkit-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(195,90,73,1) 32%);
+  background: -o-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(195,90,73,1) 32%);
+  background: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(195,90,73,1) 32%);
   background-clip: text;
    -webkit-text-fill-color: transparent;
 }
@@ -164,22 +173,20 @@ background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(195,90,73,1) 32%);
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  transition: all 300ms;
+  transition: all 450ms;
 }
 .window-header__edit-title,
 .window-header__edit-descr{
 
-border-radius: 5px;
-margin-bottom: 5px;
-padding: 0 10px;
-height: 30px;
-
-border: none;
-font-style: normal;
-
-background: #F3F3F3;
-color: #8D8B8B;
-box-sizing: border-box;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 0 10px;
+  height: 30px;
+  border: none;
+  font-style: normal;
+  background: #F3F3F3;
+  color: #8D8B8B;
+  box-sizing: border-box;
 }
 .window-header__edit-title{
   width: 50%;
@@ -190,6 +197,6 @@ box-sizing: border-box;
 .window-header__edit-descr{
   width: 100%;
   font-weight: 300;
-font-size: 14px;
-line-height: 16px;
+  font-size: 17px;
+  line-height: 16px;
 }

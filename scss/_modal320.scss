@@ -40,7 +40,7 @@ transition: transform 400ms;
   border: none;
   font-style: normal;
   font-weight: 300;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 16px;
   color: #8D8B8B;
   padding: 0 10px;
@@ -84,6 +84,22 @@ transition: transform 400ms;
     color: #FFFFFF;
         align-self: center;
  }
+ &__content-colors{
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   margin: 30px 0;
+  }
+  &__content-color{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border:none;
+    outline: none;
+    &:hover{
+      border:1px solid #414141;
+    }
+  }
 }
 
 
