@@ -96,8 +96,9 @@ transition: transform 400ms;
     border-radius: 50%;
     border:none;
     outline: none;
-    &:hover{
-      border:1px solid #414141;
+    border:1px solid #cbcbcb;
+    &.active{
+      border:2px solid #686868;
     }
   }
 }

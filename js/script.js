@@ -53,12 +53,13 @@ let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
 class EditModal {
 
 
-  constructor({modalHeader,modalFooter, modalPosition,cardID,type}) {
+  constructor({modalHeader,modalFooter, modalPosition,cardID,type ,color}) {
     this.modalHeader = modalHeader || ''
     this.modalFooter = modalFooter || ''
     this.modalPosition = modalPosition ? modalPosition : 'center'
     this.cardID = cardID || ''
     this.type= type|| ''
+    this.color= color|| ''
   }
 
 
@@ -76,20 +77,29 @@ class EditModal {
               </div>
           `;
 
-      overlay.insertAdjacentHTML('afterbegin', card);
-      main.append(overlay);
-      main.insertAdjacentHTML('beforeend', submitBTN);
+        overlay.insertAdjacentHTML('afterbegin', card);
+        main.append(overlay);
+        main.insertAdjacentHTML('beforeend', submitBTN);
+        overlay.classList.remove('hide');
 
 
-      overlay.classList.remove('hide');
-    const renederCard =   document.querySelector('.edit-modal');
+       if (this.type == 'card') {
+         colorBtnRender();
+         document.querySelector('.edit-modal__content-colors').addEventListener('click',choseColor);
+            const  newColors = document.querySelectorAll('.edit-modal__content-color');
+             newColors.forEach((item) => {
+               item.dataset.color == this.color ?  item.classList.add('active'): '';
+             });
+       }
+
+
+          const renederCard = document.querySelector('.edit-modal');
 
       setTimeout(()=>{
         renederCard.classList.remove('hide');
         overlay.classList.add(this.modalPosition);
         overlay.classList.add('modal-overlay');
-        colorBtnRender();
-        document.querySelectorAll('.create-modal__content-colors')[1].addEventListener('click',choseColor);
+
       },1)
 
       document.addEventListener('click',closeEditModal);
@@ -188,7 +198,10 @@ const closeEditModal = (e) => {
   if (!editModal && !submitBTN) {
     document.removeEventListener('click',closeEditModal);
     document.removeEventListener("click", editFunc);
-    document.querySelectorAll('.create-modal__content-colors')[1].addEventListener('click',choseColor)
+
+    if (document.querySelector('.edit-modal__submitBtn').dataset.type == 'card') {
+        document.querySelector('.edit-modal__content-colors').removeEventListener('click',choseColor)
+    }
 
     main.removeChild(document.querySelector('.modal-overlay'));
     main.removeChild(document.querySelector('.edit-modal__submitBtn'));
@@ -203,7 +216,10 @@ const closeEditModal = (e) => {
 
      document.removeEventListener('click',closeEditModal);
      document.removeEventListener("click", editFunc);
-       document.querySelectorAll('.create-modal__content-colors')[1].addEventListener('click',choseColor);
+     if (submitBTN.dataset.type == 'card') {
+        document.querySelector('.edit-modal__content-colors').removeEventListener('click',choseColor);
+     }
+
 
      changesSave(submitBTN.dataset.cardid , submitBTN.dataset.type)
 
@@ -226,7 +242,7 @@ const editFunc = (e)=>{
 
 
                       const id  =  target.dataset.id;
-                      const {taskName,taskDescription,from,to}  = TASKSDATA[id];
+                      const {taskName,taskDescription,from,to ,color}  = TASKSDATA[id];
 
                                let editModal = new EditModal({
                                  modalHeader:`  <div class="card-edit" data-id="">
@@ -242,20 +258,21 @@ const editFunc = (e)=>{
 
                                                        </div>
                                                     </div>
-                                                       <div class="create-modal__content-colors">
-                                                         <button class="create-modal__content-color" data-color="#D55050"></button>
-                                                         <button class="create-modal__content-color" data-color="#35D5A5"></button>
-                                                         <button class="create-modal__content-color" data-color="#E0FB38"></button>
-                                                         <button class="create-modal__content-color" data-color="#FAFF12"></button>
-                                                         <button class="create-modal__content-color" data-color="#9578E8"></button>
-                                                         <button class="create-modal__content-color" data-color="#0FD30B"></button>
-                                                         <button class="create-modal__content-color" data-color="#FA9A09"></button>
-                                                         <button class="create-modal__content-color" data-color="#fff"></button>
+                                                       <div class="create-modal__content-colors edit-modal__content-colors">
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#D55050"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#35D5A5"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#E0FB38"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#FAFF12"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#9578E8"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#0FD30B"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#FA9A09"></button>
+                                                         <button class="edit-modal__content-color  create-modal__content-color" data-color="#fff"></button>
                                                       </div>
                                                 </div>`,
                                  modalPosition: 'center',
                                  cardID: id,
                                  type: 'card',
+                                 color: color,
 
                                }).generate();
 
@@ -291,7 +308,7 @@ if (type === 'card') {
   TASKSDATA[cardId].from = document.getElementById('editFrom').value;
   TASKSDATA[cardId].to = document.getElementById('editTo').value;
   TASKSDATA[cardId].forSort = +document.getElementById('editFrom').value.split(':')[0] +document.getElementById('editFrom').value.split(':')[1]/60;
-  TASKSDATA[cardId].color = document.querySelector('.create-modal__content-color.active').dataset.color;
+  TASKSDATA[cardId].color = document.querySelector('.edit-modal__content-color.active').dataset.color;
   // console.log(TASKSDATA[cardId]);
 
   taskSort()
@@ -359,6 +376,7 @@ const choseColor = (e) => {
 const colorBtnRender = () => {
 
   const  newColors = document.querySelectorAll('.create-modal__content-color');
+    console.log(newColors);
       newColors.forEach((item) => {
         item.style.backgroundColor = item.dataset.color;
       });

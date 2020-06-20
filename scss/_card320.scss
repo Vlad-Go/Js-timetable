@@ -3,7 +3,8 @@
 
   box-sizing: border-box;
   width: 95%;
-  min-height: 60px;
+  // min-height: 60px;
+  // height: auto;
   background: #FFFFFF;
   // border-top: 0.2px solid #000;
   // border-bottom: 0.2px solid #000;
@@ -12,7 +13,7 @@
   padding-bottom: 10px;
   margin-bottom: 15px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   transition: background 300ms;
   &__task{
     padding: 5px 13px  5px;
@@ -44,6 +45,7 @@
     font-weight: 300;
     font-size: 16px;
     line-height: 16px;
+    margin: 0 auto;
     padding: 5px 13px 5px 0;
   }
   &__time-line{
