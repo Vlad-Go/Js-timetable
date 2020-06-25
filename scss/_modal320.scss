@@ -25,11 +25,18 @@ transition: transform 400ms;
 }
 &__content{
   padding-top: 20px;
-  border-top: 1px solid #DCBB89;
+
   display: flex;
   flex-direction: column;
-
+ position: relative;
   width: 100%;
+  & .decoration-line{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
 }
 &__content-input{
   background: #F3F3F3;
@@ -54,8 +61,7 @@ transition: transform 400ms;
   line-height: 23px;
   text-align: center;
   padding-bottom: 4px;
-  &::after{
-    content: '';
+  & span{
     position: absolute;
     bottom: 0;
     left: 0;
@@ -63,7 +69,6 @@ transition: transform 400ms;
     margin: 0 auto;
     height: 1px;
     width: 10%;
-    background-color: #DCBB89;
   }
 }
 &__content-time{
@@ -79,7 +84,6 @@ transition: transform 400ms;
     font-size: 18px;
     line-height: 21px;
     padding: 10px 27px;
-    background-color: #DCBB89;
     border:none;
     color: #FFFFFF;
         align-self: center;
@@ -111,7 +115,7 @@ transition: transform 400ms;
     height: 41px;
     background: #F3F3F3;
     border-radius: 5px;
-    border-bottom: 1px solid #DCBB89;
+    // border-bottom: 1px solid #DCBB89;
     margin: 7px 0px 20px 0px;
     font-style: normal;
     font-weight: 300;

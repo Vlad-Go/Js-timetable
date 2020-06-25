@@ -112,7 +112,9 @@
   color: #8D8B8B;
   padding: 0 10px;
   box-sizing: border-box;
-
+  &:last-child{
+    margin-bottom: 0;
+  }
 }
   &__time{
     display: flex;
@@ -133,7 +135,7 @@
    border-bottom: 1px solid #DCBB89;
    font-style: normal;
    font-weight: 300;
-   font-size: 14px;
+   font-size: 17px;
    line-height: 18px;
    color: #8D8B8B;
    border: none;

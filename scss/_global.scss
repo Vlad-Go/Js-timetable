@@ -7,6 +7,28 @@ p{
   margin: 0;
 }
 .hide{
-  display: none;
+  display: none ;
 
+}
+.tools__item.hide{
+  display: none !important;
+
+}
+// ----------------------colors
+
+.accent-classic{
+     background-color: #DCBB89;
+     transition: all 500ms;
+}
+.accent-green{
+     background-color: #2D3E2F;
+     transition: all 500ms;
+}
+.accent-red{
+     background-color: #632132;
+     transition: all 500ms;
+}
+.accent-brown{
+     background-color: #443429;
+     transition: all 500ms;
 }

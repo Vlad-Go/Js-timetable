@@ -1,19 +1,15 @@
 const
-      windowHeaderHEIGHT = document.querySelector('.window__header').clientHeight,
-      windowDescrHEIGHT = document.querySelector('.window__descr').clientHeight ,
-
-
-
-
       main = document.querySelector('.main'),
-      title = document.querySelector('.window__header'),
+      title = document.querySelector('.window__title'),
       description = document.querySelector('.window__descr'),
       windowSection = document.querySelector('.window__section'),
       toolbar = document.querySelector('.tools'),
-      toolbarInner = document.querySelector('.tools__inner'),
       modal = document.querySelector('.create-modal'),
       colorsWrapp = document.querySelector('.create-modal__content-colors'),
       colors = document.querySelectorAll('.create-modal__content-color'),
+      // -------------------theme
+      themeColor =   document.querySelectorAll('[data-theme_color]');
+
 
 
       // -----------BTNS
@@ -23,12 +19,15 @@ const
       editBTN = document.getElementById('edit'),
       tools  = document.querySelectorAll('.tools__item'),
       contentSubmit = document.querySelector('.create-modal__content-submit'),
+      settingsBTN = document.querySelectorAll('.settings'),
 
       // -------------------------form
       taskNameInput = document.getElementById('taskName'),
       taskDescriptionInput = document.getElementById('taskDescription'),
       fromInput = document.getElementById('from'),
       toInput = document.getElementById('to'),
+      // ----------------------OPTIONS
+      options = document.querySelector('.options'),
 
 
       // -------------------------date
@@ -37,7 +36,7 @@ const
       year = document.querySelector('.year');
 // ---------------------------------------------------------------------
 
-
+const accentThemesClassName = ['accent-classic','accent-green' ,'accent-red' ,'accent-brown']
 const MARGINBOTTOM = 32;
 
 
@@ -47,6 +46,9 @@ let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
 
  title.textContent = localStorage.getItem('Title')   ? JSON.parse(localStorage.Title) :  'Title';
  description.textContent = !!localStorage.getItem('Description')   ? JSON.parse(localStorage.Description) :  'description';
+
+// -----------------------------
+
 
 //---------------MODAL
 
@@ -155,6 +157,7 @@ const init = () => {
 
 //  ------------- Toolbar Funcs
 const toggleToolbar = () => {
+
   toolbar.classList.toggle('tools-active');
 
   menuBTN.classList.toggle('active');
@@ -290,7 +293,8 @@ const editFunc = (e)=>{
                                modalPosition: 'top',
                                 type: 'header',
 
-                             }).generate()
+                             }).generate();
+
                    }
          }
          else {
@@ -319,6 +323,7 @@ if (type === 'card') {
   title.textContent = document.querySelector('.window-header__edit-title').value;
   description.textContent = document.querySelector('.window-header__edit-descr').value;
   addInfoToLocalStorage();
+    windowSectionHEIGHT();
 }
 
 
@@ -326,6 +331,7 @@ if (type === 'card') {
 }
 
 // -----------------------------
+
 const taskSort = ()=>{
     TASKSDATA.sort((a,b)=>{
       return a.forSort - b.forSort;
@@ -341,7 +347,7 @@ const addInfoToLocalStorage = () => {
 
 const toggleActiveTool = (tool) => {
 
-    toolbarInner.classList.toggle('active');
+    toolbar.classList.toggle('active');
 
        tools.forEach((item) => {
 
@@ -376,11 +382,50 @@ const choseColor = (e) => {
 const colorBtnRender = () => {
 
   const  newColors = document.querySelectorAll('.create-modal__content-color');
-    console.log(newColors);
+    // console.log(newColors);
       newColors.forEach((item) => {
         item.style.backgroundColor = item.dataset.color;
       });
 }
+
+//  ------------------------THEMES
+
+
+
+const changeThemes = () => {
+  console.log(12);
+  const themeChoseWrapp = document.createElement('div');
+  accentThemesClassName.forEach((item) => {
+    const color = document.createElement('div');
+      color.classList.add(item , 'avaible-themes')
+    themeChoseWrapp.append(color);
+
+  });
+  options.innerHTML = themeChoseWrapp.outerHTML;
+  document.querySelectorAll('.avaible-themes').forEach((item, i) => {
+    item.addEventListener('click' , ()=>{
+    changeColors(accentThemesClassName[i])
+    })
+  });
+
+}
+const changeColors = (color) => {
+  console.log(1);
+  themeColor.forEach((item) => {
+
+          if (item.dataset.theme_color == 'accent') {
+              accentThemesClassName.forEach((classname) => {
+                 item.classList.remove(classname);
+               });
+                item.classList.toggle(color);
+          }
+          else if (true) {
+
+          }
+  });
+}
+
+// changeThemse()
 // =------------------------------------------
 
                // ----------------createModal------
@@ -420,8 +465,12 @@ const closeCreateModal = () => {
 
 // ---- HEIGHT--------
  const windowSectionHEIGHT = () => {
-   const mainWindowHEIGHT = document.querySelector('.main__window').clientHeight;
-   windowSection.style.height = mainWindowHEIGHT - (windowHeaderHEIGHT + windowDescrHEIGHT + MARGINBOTTOM) + 'px'
+   const
+         windowHeaderHEIGHT = document.querySelector('.window__header').clientHeight ,
+         menuHEIGHT = document.querySelector('.menu').clientHeight ,
+         mainWindowHEIGHT = document.querySelector('.main__window').clientHeight;
+         console.log('hi');
+   windowSection.style.height = mainWindowHEIGHT - (menuHEIGHT + windowHeaderHEIGHT  + MARGINBOTTOM - 60) + 'px'
  }
  const  windowHEIGHT = () => {
    document.body.style.height = window.innerHeight + 'px' ;
@@ -430,8 +479,9 @@ const closeCreateModal = () => {
 
 // -----------------------------EVENTS--------------------------
    window.addEventListener("resize",()=>{
-  windowSectionHEIGHT();
+
   windowHEIGHT()
+    windowSectionHEIGHT();
 });
    menuBTN.addEventListener('click',toggleToolbar);
 
@@ -482,6 +532,27 @@ const closeCreateModal = () => {
 
 
   });
+
+          menuBTN.addEventListener("click",()=>{
+
+                       const themeBtn = document.getElementById('theme');
+
+                settingsBTN.forEach((item) => {
+                  item.classList.toggle('active')
+                });
+                  options.classList.toggle('active');
+                if (menuBTN.classList.contains('active')) {
+
+                  themeBtn.addEventListener('click' , changeThemes)
+                }else {
+                    options.innerHTML = '<div class="options-item" id="theme"></div>'
+                    options.classList.remove('active');
+                    themeBtn.removeEventListener('click' ,changeThemes )
+                }
+
+
+
+          });
 
 
 
