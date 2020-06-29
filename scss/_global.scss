@@ -35,3 +35,12 @@ p{
 .light-brown{
      background-color: #A97952;
 }
+
+// ----------------
+.fadeOut-modal{
+ transform: translateX(100%);
+}
+.fadeOut{
+
+ opacity: 0;
+}

@@ -26,7 +26,6 @@
      font-size: 18px;
      line-height: 21px;
      padding: 10px 27px;
-     background-color: #DCBB89;
      border:none;
      color: #FFFFFF;
      align-self: center;
@@ -81,10 +80,9 @@
   padding-bottom: 10px;
   padding-top: 7px;
   margin-bottom: 15px;
-
   transition: all 400ms;
-  transform: scale(0.5);
-  animation-name: card-edit-scale;
+  transform: translateX(-100%);
+  animation-name: card-edit-in;
   animation-duration: 450ms;
   animation-fill-mode: forwards;
   &__wrapp{
@@ -102,7 +100,7 @@
   background: #F3F3F3;
   border-radius: 5px;
   margin-bottom: 16px;
-  height: 30px;
+  height: 34px;
   width: 90%;
   border: none;
   font-style: normal;
@@ -149,10 +147,10 @@
   }
 }
 
-@keyframes card-edit-scale{
+@keyframes card-edit-in{
 
   to{
-    transform: scale(1);
+      transform: translateX(0%);
   }
 }
 
@@ -175,8 +173,12 @@
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  transition: all 450ms;
+  animation-name: card-edit-in;
+  animation-duration: 450ms;
+  animation-fill-mode: forwards;
+    transform: translateX(-100%);
 }
+
 .window-header__edit-title,
 .window-header__edit-descr{
 
@@ -191,7 +193,7 @@
   box-sizing: border-box;
 }
 .window-header__edit-title{
-  width: 50%;
+  width: 100%;
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;

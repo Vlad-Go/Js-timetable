@@ -19,7 +19,7 @@ const
       editBTN = document.getElementById('edit'),
       tools  = document.querySelectorAll('.tools__item'),
       contentSubmit = document.querySelector('.create-modal__content-submit'),
-      settingsBTN = document.querySelectorAll('.settings'),
+
 
       // -------------------------form
       taskNameInput = document.getElementById('taskName'),
@@ -28,6 +28,7 @@ const
       toInput = document.getElementById('to'),
       // ----------------------OPTIONS
       options = document.querySelector('.options'),
+      optionsBTNs = document.querySelectorAll('.options-item'),
 
 
       // -------------------------date
@@ -71,13 +72,14 @@ class EditModal {
       overlay.classList.add( 'hide');
 
 
-      const  submitBTN =   `<button class="edit-modal__submitBtn" type="submit"  data-cardid="${this.cardID}" data-type="${this.type}" name="button">Apply</button>`
+
       const  card = `
               <div class="edit-modal hide" >
                 ${this.modalHeader}
                 ${this.modalFooter}
               </div>
           `;
+      const  submitBTN =   `<button class="edit-modal__submitBtn light-brown" type="submit"  data-cardid="${this.cardID}" data-type="${this.type}" name="button">Apply</button>`
 
         overlay.insertAdjacentHTML('afterbegin', card);
         main.append(overlay);
@@ -86,12 +88,12 @@ class EditModal {
 
 
        if (this.type == 'card') {
-         colorBtnRender();
-         document.querySelector('.edit-modal__content-colors').addEventListener('click',choseColor);
-            const  newColors = document.querySelectorAll('.edit-modal__content-color');
-             newColors.forEach((item) => {
-               item.dataset.color == this.color ?  item.classList.add('active'): '';
-             });
+             colorBtnRender();
+             document.querySelector('.edit-modal__content-colors').addEventListener('click',choseColor);
+                const  newColors = document.querySelectorAll('.edit-modal__content-color');
+                 newColors.forEach((item) => {
+                   item.dataset.color == this.color ?  item.classList.add('active'): '';
+                 });
        }
 
 
@@ -196,40 +198,54 @@ const editStyleToggle = () => {
 const closeEditModal = (e) => {
   const editModal =  e.target.closest('.edit-modal');
   const submitBTN =  e.target.closest('.edit-modal__submitBtn');
+  const overlay  = document.querySelector('.modal-overlay');
+  const modal  = document.querySelector('.edit-modal');
+  const modalBTN  = document.querySelector('.edit-modal__submitBtn');
 
 
   if (!editModal && !submitBTN) {
-    document.removeEventListener('click',closeEditModal);
-    document.removeEventListener("click", editFunc);
+        document.removeEventListener('click',closeEditModal);
+        document.removeEventListener("click", editFunc);
 
-    if (document.querySelector('.edit-modal__submitBtn').dataset.type == 'card') {
-        document.querySelector('.edit-modal__content-colors').removeEventListener('click',choseColor)
-    }
+        if (document.querySelector('.edit-modal__submitBtn').dataset.type == 'card') {
+            document.querySelector('.edit-modal__content-colors').removeEventListener('click',choseColor)
+        }
 
-    main.removeChild(document.querySelector('.modal-overlay'));
-    main.removeChild(document.querySelector('.edit-modal__submitBtn'));
+        overlay.classList.add('fadeOut');
+        modalBTN.classList.add('fadeOut');
+        modal.classList.add('fadeOut-modal');
 
-    editStyleToggle()
-    toggleActiveTool(editBTN)
+
+       setTimeout(()=>{
+         main.removeChild(overlay);
+         main.removeChild(modalBTN);
+       },450);
+
+        editStyleToggle()
+        toggleActiveTool(editBTN)
 
   }
   if (submitBTN) {
-     editStyleToggle()
-     toggleActiveTool(editBTN)
+         editStyleToggle()
+         toggleActiveTool(editBTN)
 
-     document.removeEventListener('click',closeEditModal);
-     document.removeEventListener("click", editFunc);
-     if (submitBTN.dataset.type == 'card') {
-        document.querySelector('.edit-modal__content-colors').removeEventListener('click',choseColor);
-     }
-
-
-     changesSave(submitBTN.dataset.cardid , submitBTN.dataset.type)
+         document.removeEventListener('click',closeEditModal);
+         document.removeEventListener("click", editFunc);
+         if (submitBTN.dataset.type == 'card') {
+            document.querySelector('.edit-modal__content-colors').removeEventListener('click',choseColor);
+         }
 
 
-     main.removeChild(document.querySelector('.modal-overlay'));
-     main.removeChild(document.querySelector('.edit-modal__submitBtn'));
+         changesSave(submitBTN.dataset.cardid , submitBTN.dataset.type);
+          overlay.classList.add('fadeOut');
+          modalBTN.classList.add('fadeOut');
+          modal.classList.add('fadeOut-modal');
 
+
+         setTimeout(()=>{
+           main.removeChild(overlay);
+           main.removeChild(modalBTN);
+         },450);
 
   }
 
@@ -248,8 +264,8 @@ const editFunc = (e)=>{
                       const {taskName,taskDescription,from,to ,color}  = TASKSDATA[id];
 
                                let editModal = new EditModal({
-                                 modalHeader:`  <div class="card-edit" data-id="">
-                                                    <div class="card-edit__wrapp" data-id="">
+                                 modalHeader:`  <div class="card-edit">
+                                                    <div class="card-edit__wrapp">
                                                        <div class="card-edit__task">
                                                            <input class="card-edit__input"  id="editTaskName" type="text" placeholder="Task name" value="${taskName}">
                                                            <input class="card-edit__input"  id="editTaskDescription" type="text" placeholder="description"value="${taskDescription}">
@@ -282,8 +298,8 @@ const editFunc = (e)=>{
 
 
 
-                   } else     if (target.classList.contains("window__header") ||target.classList.contains("window__descr"))  {
-                        console.log('Edit etc!')
+                   } else if (target.classList.contains("window__header") ||target.classList.contains("window__descr"))  {
+
                              let modalL = new EditModal({
                                modalHeader: `<div class="window-header__edit">
                                                  <input type="text" class="window-header__edit-title" value="${title.textContent}" type="text"/>
@@ -390,7 +406,18 @@ const colorBtnRender = () => {
 
 //  ------------------------THEMES
 
+const optionsMenuOpen = () => {
+   options.classList.toggle('active');
+   setTimeout(()=>{
+     optionsBTNs.forEach(item => {
+       item.classList.toggle('open')
+     });
 
+   },750)
+
+
+
+}
 
 const changeThemes = () => {
   console.log(12);
@@ -535,20 +562,22 @@ const closeCreateModal = () => {
 
           menuBTN.addEventListener("click",()=>{
 
-                       const themeBtn = document.getElementById('theme');
+               optionsMenuOpen();
 
-                settingsBTN.forEach((item) => {
-                  item.classList.toggle('active')
-                });
-                  options.classList.toggle('active');
-                if (menuBTN.classList.contains('active')) {
-
-                  themeBtn.addEventListener('click' , changeThemes)
-                }else {
-                    options.innerHTML = '<div class="options-item" id="theme"></div>'
-                    options.classList.remove('active');
-                    themeBtn.removeEventListener('click' ,changeThemes )
-                }
+                //        const themeBtn = document.getElementById('theme');
+                //
+                // settingsBTN.forEach((item) => {
+                //   item.classList.toggle('active')
+                // });
+                //   options.classList.toggle('active');
+                // if (menuBTN.classList.contains('active')) {
+                //
+                //   themeBtn.addEventListener('click' , changeThemes)
+                // }else {
+                //     options.innerHTML = '<div class="options-item" id="theme"></div>'
+                //     options.classList.remove('active');
+                //     themeBtn.removeEventListener('click' ,changeThemes )
+                // }
 
 
 
