@@ -10,7 +10,7 @@
 </head>
 <body>
 
-   <main class="main  light-brown">
+   <main class="main  "  data-theme_color="light">
          <div class="main__window">
              <div class="window__header">
                <div class="window__title">Title </div>
@@ -32,7 +32,7 @@
 
          <nav class="menu">
 
-                 <div class="menu__items         accent-brown" data-theme_color="accent">
+                 <div class="menu__items       " data-theme_color="accent">
 
 
                         <div class="tools" >
@@ -78,11 +78,11 @@
              <div class="create-modal__header">New task</div>
              <div class="create-modal__content">
 
-                 <span class="decoration-line     accent-classic" data-theme_color="accent"        ></span>
+                 <span class="decoration-line  " data-theme_color="accent" ></span>
 
                  <input class="create-modal__content-input"  id="taskName" type="text" placeholder="Task name">
                  <input class="create-modal__content-input"  id="taskDescription" type="text" placeholder="description">
-                 <div class="create-modal__content-suptitle">Time <span class="accent-classic" data-theme_color="accent"></span></div>
+                 <div class="create-modal__content-suptitle">Time <span  data-theme_color="accent"></span></div>
                  <div class="create-modal__content-time">
                      <input class="content-time__input" id='from' type="time"  placeholder="From">
                        <div class="content-time__line"></div>
@@ -99,15 +99,27 @@
                    <button class="create-modal__content-color" data-color="#FA9A09"></button>
                     <button class="create-modal__content-color" data-color="#fff"></button>
                 </div>
-                    <button class="create-modal__content-submit        light-brown"  data-theme_color="accent"      type="submit" name="button">Add</button>
+                    <button class="create-modal__content-submit      "  data-theme_color="light"      type="submit" name="button">Add</button>
              </div>
          </div>
 
 
-         <div class="options accent-classic">
-            <div class="options-item" id="theme">
+         <div class="options " data-theme_color="accent" >
 
+            <div class="options-item " data-theme_color="accent"id="themeChange">
+              <img src="img/theme.svg" alt="">
+              Change Theme
             </div>
+            <div class="options-item " data-theme_color="accent"id="timeControl">
+                <img src="img/clock.svg" alt="">
+                Time Control
+             </div>
+            <div class="options-item " data-theme_color="accent" id="breakpoints">
+              <img src="img/breakpoints.svg" alt="">
+              Breakpoints
+            </div>
+
+
          </div>
    </main>
 

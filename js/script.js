@@ -8,7 +8,7 @@ const
       colorsWrapp = document.querySelector('.create-modal__content-colors'),
       colors = document.querySelectorAll('.create-modal__content-color'),
       // -------------------theme
-      themeColor =   document.querySelectorAll('[data-theme_color]');
+
 
 
 
@@ -26,9 +26,15 @@ const
       taskDescriptionInput = document.getElementById('taskDescription'),
       fromInput = document.getElementById('from'),
       toInput = document.getElementById('to'),
+
+
       // ----------------------OPTIONS
       options = document.querySelector('.options'),
       optionsBTNs = document.querySelectorAll('.options-item'),
+
+      themeChangeBTN = document.getElementById('themeChange'),
+      timeControlBTN = document.getElementById('timeControl'),
+      breakpointsBTN = document.getElementById('breakpoints'),
 
 
       // -------------------------date
@@ -37,11 +43,45 @@ const
       year = document.querySelector('.year');
 // ---------------------------------------------------------------------
 
-const accentThemesClassName = ['accent-classic','accent-green' ,'accent-red' ,'accent-brown']
+
 const MARGINBOTTOM = 32;
 
+let currentColor = 'brown' ;
+const themeColors = ['green' ,'red' ,'brown'];
 
 
+// const brown = {
+//   accent:'accent-brown',
+//   light:'light-brown'
+//
+// }
+// const green = {
+//   accent:'accent-green',
+//   light:'light-green'
+//
+// }
+// const red = {
+//   accent:'accent-red',
+//   light:'light-red'
+//
+// }
+const themes = {
+  'green' : {
+     accent:'accent-green',
+     light:'light-green'
+
+   },
+  'red':{
+   accent:'accent-red',
+   light:'light-red'
+
+ },
+ 'brown' :{
+  accent:'accent-brown',
+  light:'light-brown'
+
+}
+}
 
 let TASKSDATA = localStorage.length   ? JSON.parse(localStorage.Tasks) :   [];
 
@@ -404,55 +444,82 @@ const colorBtnRender = () => {
       });
 }
 
-//  ------------------------THEMES
+//  ------------------------OPTOINS
+const optionsMenuToogle = () =>{
+  options.classList.toggle('active');
+  setTimeout(()=>{
+    optionsBTNs.forEach(item => {
+      item.classList.toggle('open')
+    });
+
+  },750)
+}
+
+
 
 const optionsMenuOpen = () => {
-   options.classList.toggle('active');
-   setTimeout(()=>{
-     optionsBTNs.forEach(item => {
-       item.classList.toggle('open')
-     });
+      optionsMenuToogle()
+      themeChangeBTN.addEventListener('click',themeChange);
 
-   },750)
-
+      setTimeout(()=>{
+          document.addEventListener('click',closeOptions);
+      },750)
 
 
 }
 
-const changeThemes = () => {
-  console.log(12);
-  const themeChoseWrapp = document.createElement('div');
-  accentThemesClassName.forEach((item) => {
-    const color = document.createElement('div');
-      color.classList.add(item , 'avaible-themes')
-    themeChoseWrapp.append(color);
+const closeOptions = (e) =>{
+   if (!e.target.closest('.options')) {
+      console.log(1);
+       document.removeEventListener('click',closeOptions);
+       themeChangeBTN.removeEventListener('click',themeChange);
+     const isChengeThemes = !!document.querySelector('.themes-change');
+      isChengeThemes ?  options.removeChild(document.querySelector('.themes-change')) : void 0 ;
+       optionsMenuToogle();
+       menuBTN.classList.remove('active');
+   }
+};
 
+const themeChange = () => {
+
+  const themeChoseWrapp = document.createElement('div');
+        themeChoseWrapp.classList.add('themes-change' , themes[currentColor].accent)
+        themeChoseWrapp.setAttribute('data-theme_color', 'accent')
+  themeColors.forEach((item, i) => {
+    const color = document.createElement('div');
+      color.classList.add('avaible-themes', item)
+      themeChoseWrapp.append(color);
   });
-  options.innerHTML = themeChoseWrapp.outerHTML;
+
+  options.insertAdjacentHTML('beforeend', themeChoseWrapp.outerHTML);
+
   document.querySelectorAll('.avaible-themes').forEach((item, i) => {
     item.addEventListener('click' , ()=>{
-    changeColors(accentThemesClassName[i])
+    renderColors(themeColors[i])
     })
   });
 
 }
-const changeColors = (color) => {
-  console.log(1);
-  themeColor.forEach((item) => {
+
+
+const renderColors = (color) => {
+      document.querySelectorAll('[data-theme_color]').forEach((item) => {
 
           if (item.dataset.theme_color == 'accent') {
-              accentThemesClassName.forEach((classname) => {
-                 item.classList.remove(classname);
-               });
-                item.classList.toggle(color);
-          }
-          else if (true) {
+                 item.classList.remove(themes[currentColor].accent);
 
+                 item.classList.toggle(themes[color].accent);
+          }
+          else if (item.dataset.theme_color == 'light') {
+            item.classList.remove(themes[currentColor].light);
+
+            item.classList.toggle(themes[color].light);
           }
   });
+  currentColor = color;
 }
 
-// changeThemse()
+renderColors('brown')
 // =------------------------------------------
 
                // ----------------createModal------
@@ -562,22 +629,16 @@ const closeCreateModal = () => {
 
           menuBTN.addEventListener("click",()=>{
 
-               optionsMenuOpen();
 
-                //        const themeBtn = document.getElementById('theme');
-                //
-                // settingsBTN.forEach((item) => {
-                //   item.classList.toggle('active')
-                // });
-                //   options.classList.toggle('active');
-                // if (menuBTN.classList.contains('active')) {
-                //
-                //   themeBtn.addEventListener('click' , changeThemes)
-                // }else {
-                //     options.innerHTML = '<div class="options-item" id="theme"></div>'
-                //     options.classList.remove('active');
-                //     themeBtn.removeEventListener('click' ,changeThemes )
-                // }
+
+
+
+                if (menuBTN.classList.contains('active')) {
+                   optionsMenuOpen();
+
+                }else {
+                  closeOptions()
+                }
 
 
 

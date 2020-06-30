@@ -16,10 +16,8 @@ p{
 }
 // ----------------------colors
 
-.accent-classic{
-     background-color: #DCBB89;
-     transition: all 500ms;
-}
+
+// ------accent
 .accent-green{
      background-color: #2D3E2F;
      transition: all 500ms;
@@ -32,10 +30,31 @@ p{
      background-color: #443429;
      transition: all 500ms;
 }
+// -----------light
+
 .light-brown{
      background-color: #A97952;
 }
+.light-red{
+     background-color: #831C37;
+}
+.light-green{
+     background-color: #2A5730;
+}
+// -----------------simple
 
+.green{
+     background-color: #2D3E2F;
+     transition: all 500ms;
+}
+.red{
+     background-color: #632132;
+     transition: all 500ms;
+}
+.brown{
+     background-color: #473122;
+     transition: all 500ms;
+}
 // ----------------
 .fadeOut-modal{
  transform: translateX(100%);
